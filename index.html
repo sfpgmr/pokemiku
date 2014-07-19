@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ポケミク音源機能テスト（１） 音色エディット</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+    <script src="/scripts/app.js"></script>
+
+
+    <!--<script type="text/javascript" src="/scripts/googleanalytics.js" ></script>-->
+    <style>
+	input[type='range'].sf-slider {
+		-webkit-appearance: none;
+/*
+    border-radius: 5px;
+    */		
+		box-shadow: inset 0 0 5px #333;
+		background-color: #999;
+		vertical-align: middle;
+        margin:auto;
+	}
+	input[type='range']::-webkit-slider-thumb {
+		-webkit-appearance: none !important;
+		border-radius: 10px;
+		background-color: #FFF;
+		box-shadow:inset 0 0 10px rgba(000,000,000,0.5);
+		border: 1px solid #999;
+		height: 30px;
+		width: 30px;
+	}
+	input[type='range']::-moz-range-thumb {
+		-moz-appearance: none;
+		border-radius: 10px;
+		background-color: #FFF;
+		box-shadow:inset 0 0 10px rgba(000,000,000,0.5);
+		border: 1px solid #999;
+		height: 30px;
+		width: 20px;
+	}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h3>ポケミク音源機能テスト（１） 音色エディット</h3>
+            <p>
+                <a href="http://www.amazon.co.jp/gp/product/4057504656/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4057504656&linkCode=as2&tag=sfprogrpage-22">
+                    ポケット・ミク
+                </a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=sfprogrpage-22&l=as2&o=9&a=4057504656" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+                の音源部分の音色を変えるパラメータをいじるサンプルです。
+            </p>
+        </header>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        設定
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <div class="input-group-addon">MIDI入力</div>
+                                <select class="form-control" data-bind="options:inputs,optionsText:'name',value:input"></select>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-addon">MIDI出力</div>
+                                <select class="form-control" data-bind="options:outputs,optionsText:'name',value:output"></select>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-addon">出力Ch.</div>
+                                <select class="form-control sf-slider" data-bind="options:outputChannels,optionsText:'name',value:outputChannel"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        GM音色エディット
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            <div class="input-group ">
+                                <div class="input-group-addon">GM音色</div>
+                                <select class="form-control" data-bind="options:programs,optionsText:'name',value:program"></select>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-addon">フィルタ</div>
+                                <input class="form-control" style="display:inline" title="ローパスフィルタ" type="range" value="0" min="0" max="127" />
+                            </div>
+                            <input class="form-control" style="display:inline" type="text" />
+                        </div>
+
+                    </div>
+                </div>
+                <!--
+                                  <select data-bind="options:programs,optionsText:'name',optionsValue:'no',value:program"></select>
+                -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Input Monitor
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>time</th>
+                                <th>event</th>
+                            </tr>
+                        </thead>
+                        <!-- foreach バインディングを使用して MIDI イベントを表示 -->
+                        <tbody data-bind="foreach:inputEvents">
+                            <tr>
+                                <td data-bind="text:timeStamp"></td>
+                                <!-- イベントデータはネストして表示 -->
+                                <td data-bind="foreach:{data:$data.events,as:'ev'}">
+                                    <span><span data-bind="text:ev"></span>&nbsp;</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

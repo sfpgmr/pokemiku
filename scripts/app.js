@@ -152,6 +152,7 @@ function ViewModel(midi) {
     self.outputChannel(value);
   };
 
+  // 
   // MIDIイベントを保管する配列（10イベントまで）
   self.inputEvents = ko.observableArray();
 
@@ -332,14 +333,96 @@ function ViewModel(midi) {
       self.inputEvents().shift();
     }
   });
+
+  // フィルター
+  self.filter = (function () {
+      var filter_ = ko.observable(0);
+      return ko.computed({
+          read: function () { return filter_(); },
+          write: function (value) {
+              value |= 0;
+              filter_(value);
+              midi.output.send([0xB0 | midi.outputChannel, 0x63,1], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x62, 0x20], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x6, value + 64 ], 0);
+          },
+          owner: this
+      });
+  })();
+
+  self.cutoff = (function () {
+      var cutoff_ = ko.observable(0);
+      return ko.computed({
+          read: function () { return cutoff_(); },
+          write: function (value) {
+              value |= 0;
+              cutoff_(value);
+              midi.output.send([0xB0 | midi.outputChannel, 0x63, 1], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x62, 0x21], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x6, value + 64], 0);
+          },
+          owner: this
+      });
+  })();
+
+  self.attack = (function () {
+      var value_ = ko.observable(0);
+      return ko.computed({
+          read: function () { return value_(); },
+          write: function (value) {
+              value |= 0;
+              value_(value);
+              midi.output.send([0xB0 | midi.outputChannel, 0x63, 1], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x62, 0x63], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x6, value + 64], 0);
+          },
+          owner: this
+      });
+  })();
+
+  self.decay = (function () {
+      var value_ = ko.observable(0);
+      return ko.computed({
+          read: function () { return value_(); },
+          write: function (value) {
+              value |= 0;
+              value_(value);
+              midi.output.send([0xB0 | midi.outputChannel, 0x63, 1], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x62, 0x64], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x6, value + 64], 0);
+          },
+          owner: this
+      });
+  })();
+
+  self.release = (function () {
+      var value_ = ko.observable(0);
+      return ko.computed({
+          read: function () { return value_(); },
+          write: function (value) {
+              value |= 0;
+              value_(value);
+              midi.output.send([0xB0 | midi.outputChannel, 0x63, 1], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x62, 0x66], 0);
+              midi.output.send([0xB0 | midi.outputChannel, 0x6, value + 64], 0);
+          },
+          owner: this
+      });
+  })();
+
+
 }
 
 $().ready(function () {
-  if (navigator.requestMIDIAccess) {
+if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess({
       sysex: true
     }).then(function (access) {
-      ko.applyBindings(new ViewModel(new MIDI(access)));
+        ko.applyBindings(new ViewModel(new MIDI(access)));
+        $('.slider').each(function (v) {
+            v.slider();
+        });
+//        $('#filterslider').slider();
     },
     //////////////////////////
     // MIDIAccess 取得失敗

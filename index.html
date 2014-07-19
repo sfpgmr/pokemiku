@@ -4,45 +4,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>ポケミク音源機能テスト（１） 音色エディット</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/slider.css" />
 
     <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+    <script src="./scripts/bootstrap-slider.js"></script>
+    <script src="./scripts/bootstrap-slider-knockout-binding.js"></script>
     <script src="./scripts/app.js"></script>
-
 
     <!--<script type="text/javascript" src="/scripts/googleanalytics.js" ></script>-->
     <style>
-	input[type='range'].sf-slider {
-		-webkit-appearance: none;
-/*
-    border-radius: 5px;
-    */		
-		box-shadow: inset 0 0 5px #333;
-		background-color: #999;
-		vertical-align: middle;
-        margin:auto;
-	}
-	input[type='range']::-webkit-slider-thumb {
-		-webkit-appearance: none !important;
-		border-radius: 10px;
-		background-color: #FFF;
-		box-shadow:inset 0 0 10px rgba(000,000,000,0.5);
-		border: 1px solid #999;
-		height: 30px;
-		width: 30px;
-	}
-	input[type='range']::-moz-range-thumb {
-		-moz-appearance: none;
-		border-radius: 10px;
-		background-color: #FFF;
-		box-shadow:inset 0 0 10px rgba(000,000,000,0.5);
-		border: 1px solid #999;
-		height: 30px;
-		width: 20px;
-	}
+            input[type='range'].sf-slider {
+                -webkit-appearance: none;
+                border-radius: 2px;
+                box-shadow: inset 0 0 5px #333;
+                background-color: #999;
+                vertical-align: middle;
+                margin: auto;
+            }
+
+            input[type='range']::-webkit-slider-thumb {
+                -webkit-appearance: none !important;
+                border-radius: 2px;
+                background-color: #FFF;
+                box-shadow: inset 0 0 10px rgba(000,000,000,0.5);
+                border: 1px solid #999;
+                height: 10px;
+                width: 10px;
+            }
+
+            input[type='range']::-moz-range-thumb {
+                -moz-appearance: none;
+                border-radius: 2px;
+                background-color: #FFF;
+                box-shadow: inset 0 0 10px rgba(000,000,000,0.5);
+                border: 1px solid #999;
+                height: 10px;
+                width: 10px;
+            }
+
     </style>
 </head>
 <body>
@@ -88,18 +91,42 @@
                         GM音色エディット
                     </div>
                     <div class="panel-body">
-                        <div class="form-inline">
+                        <div class="form-group">
                             <div class="input-group ">
                                 <div class="input-group-addon">GM音色</div>
                                 <select class="form-control" data-bind="options:programs,optionsText:'name',value:program"></select>
                             </div>
-                            <div class="input-group">
-                                <div class="input-group-addon">フィルタ</div>
-                                <input class="form-control" style="display:inline" title="ローパスフィルタ" type="range" value="0" min="0" max="127" />
-                            </div>
-                            <input class="form-control" style="display:inline" type="text" />
                         </div>
-
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    フィルタ
+                                </div>
+                                <div class="form-control">
+                                    <input id="filterslider" class="slider" title="ローパスフィルタ" type="text" data-bind="sliderValue: {value : filter,min:-64,max:63}" />
+                                </div>
+                                <div class="input-group-addon">
+                                    レゾナンス
+                                </div>
+                                <div class="form-control">
+                                    <input id="cutoffslider" class="slider" title="カットオフ" type="text" data-bind="sliderValue: {value : cutoff,min:-64,max:63}" />
+                                </div>
+                                </div>
+                            <div class="input-group">
+                                <div class="input-group-addon">アタック</div>
+                                <div class="form-control">
+                                    <input type="text" class="slider" data-bind="sliderValue:{value:attack,min:-64,max:63}" />
+                                </div>
+                                <div class="input-group-addon">ディケイ</div>
+                                <div class="form-control">
+                                    <input type="text" class="slider" data-bind="sliderValue:{value:decay,min:-64,max:63}" />
+                                </div>
+                                <div class="input-group-addon">リリース</div>
+                                <div class="form-control">
+                                    <input type="text" class="slider" data-bind="sliderValue:{value:release,min:-64,max:63}" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!--
